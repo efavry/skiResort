@@ -42,6 +42,7 @@
 
 #include "graphwidget.h"
 #include "graphpathwidget.h"
+#include "rightwidget.h"
 
 int main(int argc, char **argv)
 {
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
     layout->addWidget(pathWidget,21,1,1,20);
 
 
-    layout->addWidget(new QPushButton("test"),1,21,1,1);
+    layout->addWidget(new RightWidget(),1,21,1,1);
     QWidget mainWindow;
     mainWindow.setLayout(layout);
     mainWindow.showMaximized();

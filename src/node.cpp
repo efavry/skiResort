@@ -8,7 +8,7 @@
 #include "node.h"
 #include "graphwidget.h"
 
-Node::Node(GraphWidget *graphWidget,bool isActive)
+Node::Node(GraphWidget *graphWidget,bool isActive, bool isCenterNode)
     : graph(graphWidget)
 {
     if(isActive)
@@ -17,7 +17,7 @@ Node::Node(GraphWidget *graphWidget,bool isActive)
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     this->activated = isActive;
-    this->centerNode = false;
+    this->centerNode = isCenterNode;
 }
 
 void Node::addEdge(Edge *edge)
@@ -40,21 +40,16 @@ void Node::calculateForces()
     }
 
     // Sum up all forces pushing this item away
+    //they come from the surrounding node
     qreal xvel = 0;
     qreal yvel = 0;
     qreal divideBy = 1.5; //default : 1 good one : 2
-    foreach (QGraphicsItem *item, scene()->items())
+    foreach (Node *node, graph->getListOfNode())
     {
-        Node *node = qgraphicsitem_cast<Node *>(item);
-        if (!node)
-            continue;
-
         QPointF vec = mapToItem(node, 0, 0);
         qreal dx = vec.x();
         qreal dy = vec.y();
         double l = 1.0 * (dx * dx + dy * dy);
-        //std::cout << "lol" << l << std::endl;
-
         if (l > 0)
         {
             xvel += (dx * 150.0)/(l /divideBy);
@@ -63,7 +58,7 @@ void Node::calculateForces()
     }
 
     // Now subtract all forces pulling items together
-    double weight = (edgeList.size() + 1) * 10;
+    double weight = (edgeList.size() + 1)*10; //increasing this value will result in farthest node
     foreach (Edge *edge, edgeList)
     {
         QPointF vec;
@@ -80,7 +75,7 @@ void Node::calculateForces()
         xvel = yvel = 0;
 
     QRectF sceneRect = scene()->sceneRect();
-    int burstingCoeff=100; //default : 100; other good one : 50; the smallest the farthest the node will go
+    int burstingCoeff=20; //default : 100; other good one : 50; the smallest the farthest the node will go
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + burstingCoeff), sceneRect.right() - burstingCoeff));
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + burstingCoeff), sceneRect.bottom() - burstingCoeff));
@@ -136,14 +131,15 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     if(centerNode)
     {
+
         painter->drawText(QPointF(-30,4), QString("CenterNode"));
     }
     else
     {
         QString txtToPrint("t");
         txtToPrint.append(QString::number(this->pos().x()));
-        std::cout << txtToPrint.toStdString() << std::endl;
-        std::cout << txtToPrint.size() << std::endl;
+        //std::cout << txtToPrint.toStdString() << std::endl;
+        //std::cout << txtToPrint.size() << std::endl;
         painter->drawText(QPointF(-(txtToPrint.size()*3),4), txtToPrint);
     }
 }

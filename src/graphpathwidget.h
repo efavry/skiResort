@@ -1,5 +1,5 @@
-#ifndef GRAPHPATHWIDGET_H
-#define GRAPHPATHWIDGET_H
+#ifndef GRAPH_GRAPHPATHWIDGET_H
+#define GRAPH_GRAPHPATHWIDGET_H
 #include "graphwidget.h"
 
 class GraphPathWidget : public GraphWidget

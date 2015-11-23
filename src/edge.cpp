@@ -1,6 +1,6 @@
 //TODO : info on edge, draw an arc for the edge
 #include <QPainter>
-
+#include <iostream>
 #include "edge.h"
 #include "node.h"
 
@@ -9,8 +9,8 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-Edge::Edge(Node *sourceNode, Node *destNode)
-    : arrowSize(10),edgeColor(Qt::black)
+Edge::Edge(Node *sourceNode, Node *destNode, QString infoOnEdge)
+    : arrowSize(10),edgeColor(Qt::black),info(infoOnEdge)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -91,4 +91,8 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
                                               cos(angle - Pi + Pi / 3) * arrowSize);
     painter->setBrush(Qt::darkBlue);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+    //this->info=QString("test");
+    painter->setPen(QPen(Qt::black, 0));
+    std::cout << this->info.size() << std::endl;
+    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,this->info);
 }

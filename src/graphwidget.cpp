@@ -44,6 +44,7 @@
 
 #include <QtGui>
 #include <math.h>
+//#include <QGLWidget>
 
 GraphWidget::GraphWidget(QWidget *parent,
                          int sceneBoundX,
@@ -64,6 +65,7 @@ GraphWidget::GraphWidget(QWidget *parent,
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(scaleFactorX, scaleFactorY);
+    //setViewport(new QGLWidget());
 }
 
 
@@ -73,33 +75,35 @@ void GraphWidget::populate()
     int sceneBoundY=this->scene()->height();
     if(centerNode == NULL)
     {
-        centerNode = new Node(this);
+        centerNode = new Node(this,true,true);
         scene()->addItem(centerNode);
         centerNode->setPos(sceneBoundX/2, sceneBoundY/2);
-        centerNode->setAsCenterNode();
+        listOfNode.append(centerNode);
+        //centerNode->setAsCenterNode();
     }
-
+    QList<Node *> listOfNodeToAdd;
     for(int i=0;i<36;++i )
     {
-        listOfNode.append(new Node(this));
+        listOfNodeToAdd.append(new Node(this));
     }
-    foreach(Node* n , listOfNode)
+    foreach(Node* n , listOfNodeToAdd)
     {
         scene()->addItem(n);
         scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],n));
         for(int i=0;i<(qrand() % 2);++i )
         {
-            scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],n));
+            scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],n,QString("to witness the beauty of the ").append(QString::number(i)).append(" run")));
         }
+        listOfNode.append(n);
         n->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
 
     }
 
     //now link randomly the center node
-    scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],centerNode));
+    scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],centerNode,QString("I Wish I was there")));
     for(int i=0;i<(qrand() % 2);++i )
     {
-        scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],centerNode));
+        scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],centerNode,QString("to witness the beauty of the ").append(QString::number(i)).append(" run") ));
     }
 }
 
@@ -142,23 +146,26 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
-
+/*
     QList<Node *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
+    foreach (QGraphicsItem *item, scene()->items())
+    {
         if (Node *node = qgraphicsitem_cast<Node *>(item))
             nodes << node;
     }
-
-    foreach (Node *node, nodes)
+*/
+    foreach (Node *node, listOfNode)
         node->calculateForces();
 
     bool itemsMoved = false;
-    foreach (Node *node, nodes) {
+    foreach (Node *node, listOfNode)
+    {
         if (node->advance())
             itemsMoved = true;
     }
 
-    if (!itemsMoved) {
+    if (!itemsMoved)
+    {
         killTimer(timerId);
         timerId = 0;
     }
@@ -197,10 +204,15 @@ void GraphWidget::shuffle()
 {
     int sceneBoundX=this->scene()->width();
     int sceneBoundY=this->scene()->height();
-    foreach (QGraphicsItem *item, scene()->items())
+    /*foreach (QGraphicsItem *item, scene()->items())
     {
         if (qgraphicsitem_cast<Node *>(item))
             item->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
+    }*/
+
+    foreach (Node *n , listOfNode)
+    {
+            n->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
     }
 }
 
