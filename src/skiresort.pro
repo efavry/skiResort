@@ -1,16 +1,16 @@
 #QT += opengl
  HEADERS += \
-         edge.h \
-         node.h \
-         graphwidget.h \
-    graphpathwidget.h \
-    rightwidget.h
+         view/edge.h \
+         view/node.h \
+         view/graphwidget.h \
+         view/graphpathwidget.h \
+         view/rightwidget.h
 
  SOURCES += \
-         edge.cpp \
-         main.cpp \
-         node.cpp \
-         graphwidget.cpp \
-    graphpathwidget.cpp \
-    rightwidget.cpp
+         view/edge.cpp \
+         view/node.cpp \
+         view/graphwidget.cpp \
+         view/graphpathwidget.cpp \
+         view/rightwidget.cpp \
+    main.cpp
 

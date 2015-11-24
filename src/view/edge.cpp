@@ -5,7 +5,6 @@
 #include "node.h"
 
 #include <math.h>
-
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
@@ -78,8 +77,15 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     // Draw the line itself
     painter->setPen(QPen(this->edgeColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
-    //painter->drawArc(sourcePoint.x(),sourcePoint.y(),destPoint.x(),destPoint.y(),30*16,120*16);
-
+/*
+    QPainterPath path;
+    path.moveTo(sourcePoint);//c0
+    //c1 puis c2 puis c3
+    path.cubicTo(sourcePoint.x()+ line.dx()/3,sourcePoint.y(), //c1
+                 destPoint.x()- line.dx()/3,destPoint.y(), //c2
+                 destPoint.x(),destPoint.y()); //endpoint
+    painter->drawPath(path);
+*/
     // Draw the arrows
     double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
@@ -91,7 +97,8 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
                                               cos(angle - Pi + Pi / 3) * arrowSize);
     painter->setBrush(Qt::darkBlue);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
-    //this->info=QString("test");
+
+    //draw info text
     painter->setPen(QPen(Qt::black, 0));
     std::cout << this->info.size() << std::endl;
     painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,this->info);

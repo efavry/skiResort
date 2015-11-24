@@ -2,9 +2,7 @@
 #define GRAPH_EDGE_H
 
 #include <QGraphicsItem>
-
 class Node;
-
 class Edge : public QGraphicsItem
 {
 public:

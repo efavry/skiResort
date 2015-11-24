@@ -40,9 +40,9 @@
 
 #include <QtGui>
 
-#include "graphwidget.h"
-#include "graphpathwidget.h"
-#include "rightwidget.h"
+#include "view/graphwidget.h"
+#include "view/graphpathwidget.h"
+#include "view/rightwidget.h"
 
 int main(int argc, char **argv)
 {
