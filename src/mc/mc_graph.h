@@ -10,17 +10,15 @@ class MC_graph //in fact it is a digraph
 private:
     list<MC_node *> listOfNodes; //will usefull for unmark or things like that
     void dfsRec(MC_node* n,list<MC_node *>*);
-    MC_graph();
     MC_graph(const MC_graph&);
 public:
-    MC_graph(vector<vector<unsigned int>>,int);
+    MC_graph();
     void addNode(MC_node *);
     void connectNode(MC_node *,MC_node *);
     list<MC_node *> dfs(MC_node* source);
-    vector<vector<unsigned int>>  tarjan();
     void unmarkAll();
     list<MC_node *> dijkstra(MC_node* startPoint, MC_node* endPoint); //return the ordered path from start node to end node
-
+    list<MC_node *>& getListOfNodes(){return listOfNodes;}
     ~MC_graph();
 }
 ;

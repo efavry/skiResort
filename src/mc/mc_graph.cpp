@@ -15,7 +15,7 @@ void MC_graph::addNode(MC_node *n)
 
 void MC_graph::connectNode(MC_node *from,MC_node *to)
 {//can be used later on to use edges defined by a class
-    cout << "Connecting " << from->uint_name << "to" << to->uint_name << endl;
+    cout << "Connecting " << from->id << "to" << to->id << endl;
     from->addNeighbor(to);
 }
 
@@ -41,7 +41,7 @@ void MC_graph::dfsRec(MC_node* n,list<MC_node *> *reachableNodeList)
     {
         reachableNodeList->push_back(n);
         n->markNode();
-        cout << "DFS : I'm " << n->uint_name << endl;
+        cout << "DFS : I'm " << n->id << endl;
         for(MC_node* m:n->l_successors)
                 this->dfsRec(m,reachableNodeList);
     }

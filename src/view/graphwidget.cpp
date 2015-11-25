@@ -148,7 +148,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     gradient.setColorAt(1, endBackgroundGradient);
     painter->fillRect(rect.intersect(sceneRect), gradient);
     painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
+    //painter->drawRect(sceneRect);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor)

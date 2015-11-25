@@ -1,9 +1,11 @@
 #include "mc/mc_edge.h"
 #include "mc/mc_node.h"
 
-MC_node::MC_node(unsigned int name)
+MC_node::MC_node(int inId, string inName, int inAltitude)
 {
-    this->uint_name= name;
+    this->id= inId;
+    this->name = inName;
+    this->altitude = inAltitude;
 }
 
 bool MC_node::isMarkedNode()
