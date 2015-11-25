@@ -10,8 +10,8 @@ private:
     bool b_mark;
     list<MC_node*> l_successors;
     MC_node* predecessor;
-
     MC_node (const MC_node&); //copy constructor
+    void addNeighbor(MC_node * n);
 public:
     MC_node(unsigned int name);
 

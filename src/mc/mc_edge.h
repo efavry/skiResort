@@ -15,7 +15,7 @@ private :
     MC_node* dest;
     int routeNumber;
     string routeName;
-type
+
 
 };
 

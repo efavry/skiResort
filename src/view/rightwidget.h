@@ -9,6 +9,8 @@ class RightWidget : public QWidget
 public:
     explicit RightWidget(QWidget *parent = 0);
 
+private :
+    QGridLayout *layout;
 signals:
 
 public slots:
