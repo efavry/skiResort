@@ -35,18 +35,18 @@ void GraphWidget::populate()
     int sceneBoundY=this->scene()->height();
     if(centerNode == NULL)
     {
-        centerNode = new Node(this,true,true);
+        centerNode = new V_Node(this,true,true);
         scene()->addItem(centerNode);
         centerNode->setPos(sceneBoundX/2, sceneBoundY/2);
         listOfNode.append(centerNode);
         //centerNode->setAsCenterNode();
     }
-    QList<Node *> listOfNodeToAdd;
+    QList<V_Node *> listOfNodeToAdd;
     for(int i=0;i<36;++i )
     {
-        listOfNodeToAdd.append(new Node(this));
+        listOfNodeToAdd.append(new V_Node(this));
     }
-    foreach(Node* n , listOfNodeToAdd)
+    foreach(V_Node* n , listOfNodeToAdd)
     {
         scene()->addItem(n);
         scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],n));
@@ -107,18 +107,18 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
 /*
-    QList<Node *> nodes;
+    QList<V_Node *> nodes;
     foreach (QGraphicsItem *item, scene()->items())
     {
-        if (Node *node = qgraphicsitem_cast<Node *>(item))
+        if (V_Node *node = qgraphicsitem_cast<V_Node *>(item))
             nodes << node;
     }
 */
-    foreach (Node *node, listOfNode)
+    foreach (V_Node *node, listOfNode)
         node->calculateForces();
 
     bool itemsMoved = false;
-    foreach (Node *node, listOfNode)
+    foreach (V_Node *node, listOfNode)
     {
         if (node->advance())
             itemsMoved = true;
@@ -170,7 +170,7 @@ void GraphWidget::shuffle()
             item->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
     }*/
 
-    foreach (Node *n , listOfNode)
+    foreach (V_Node *n , listOfNode)
     {
             n->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
     }

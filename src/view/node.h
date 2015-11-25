@@ -8,10 +8,10 @@ class Edge;
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
 
-class Node : public QGraphicsItem
+class V_Node : public QGraphicsItem
 {
 public:
-    Node(GraphWidget *graphWidget, bool isActive = true, bool isCenterNode = false);
+    V_Node(GraphWidget *graphWidget, bool isActive = true, bool isCenterNode = false);
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;

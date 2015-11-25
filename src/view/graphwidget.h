@@ -3,7 +3,7 @@
 
 #include <QtGui/QGraphicsView>
 
-class Node;
+class V_Node;
 
 class GraphWidget : public QGraphicsView
 {
@@ -14,7 +14,7 @@ public:
     GraphWidget(QWidget *parent=0,int sceneBoundX = 1900,int sceneBoundY = 1100,qreal scaleFactorX= 0.6,qreal scaleFactorY= 0.6);
     void itemMoved();
     virtual void populate();
-    QList<Node *>& getListOfNode(){return listOfNode;}
+    QList<V_Node *>& getListOfNode(){return listOfNode;}
 
 public slots:
     virtual void shuffle();
@@ -31,8 +31,8 @@ protected:
 
     QColor startBackgroundGradient;
     QColor endBackgroundGradient;
-    QList<Node*> listOfNode;
-    Node *centerNode=NULL;
+    QList<V_Node*> listOfNode;
+    V_Node *centerNode=NULL;
 
 private:
     int timerId;

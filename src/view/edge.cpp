@@ -8,7 +8,7 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-Edge::Edge(Node *sourceNode, Node *destNode, QString infoOnEdge)
+Edge::Edge(V_Node *sourceNode, V_Node *destNode, QString infoOnEdge)
     : arrowSize(10),edgeColor(Qt::black),info(infoOnEdge)
 {
     setAcceptedMouseButtons(0);
@@ -19,12 +19,12 @@ Edge::Edge(Node *sourceNode, Node *destNode, QString infoOnEdge)
     adjust();
 }
 
-Node *Edge::sourceNode() const
+V_Node *Edge::sourceNode() const
 {
     return source;
 }
 
-Node *Edge::destNode() const
+V_Node *Edge::destNode() const
 {
     return dest;
 }
@@ -100,6 +100,6 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
     //draw info text
     painter->setPen(QPen(Qt::black, 0));
-    std::cout << this->info.size() << std::endl;
+    //std::cout << this->info.size() << std::endl;
     painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,this->info);
 }

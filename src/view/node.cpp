@@ -8,7 +8,7 @@
 #include "node.h"
 #include "graphwidget.h"
 
-Node::Node(GraphWidget *graphWidget,bool isActive, bool isCenterNode)
+V_Node::V_Node(GraphWidget *graphWidget,bool isActive, bool isCenterNode)
     : graph(graphWidget)
 {
     if(isActive)
@@ -20,18 +20,18 @@ Node::Node(GraphWidget *graphWidget,bool isActive, bool isCenterNode)
     this->centerNode = isCenterNode;
 }
 
-void Node::addEdge(Edge *edge)
+void V_Node::addEdge(Edge *edge)
 {
     edgeList << edge;
     edge->adjust();
 }
 
-QList<Edge *> Node::edges() const
+QList<Edge *> V_Node::edges() const
 {
     return edgeList;
 }
 
-void Node::calculateForces()
+void V_Node::calculateForces()
 {
     if (!scene() || scene()->mouseGrabberItem() == this || centerNode || !activated)
     {
@@ -44,7 +44,7 @@ void Node::calculateForces()
     qreal xvel = 0;
     qreal yvel = 0;
     qreal divideBy = 1.5; //default : 1 good one : 2
-    foreach (Node *node, graph->getListOfNode())
+    foreach (V_Node *node, graph->getListOfNode())
     {
         QPointF vec = mapToItem(node, 0, 0);
         qreal dx = vec.x();
@@ -81,7 +81,7 @@ void Node::calculateForces()
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + burstingCoeff), sceneRect.bottom() - burstingCoeff));
 }
 
-bool Node::advance()
+bool V_Node::advance()
 {
     if (newPos == pos())
         return false;
@@ -90,7 +90,7 @@ bool Node::advance()
     return true;
 }
 
-QRectF Node::boundingRect() const
+QRectF V_Node::boundingRect() const
 {
 
     qreal adjust = 100;
@@ -98,7 +98,7 @@ QRectF Node::boundingRect() const
                   43 + adjust, 43 + adjust);
 }
 
-QPainterPath Node::shape() const
+QPainterPath V_Node::shape() const
 {
     QPainterPath path;
     path.addEllipse(-20, -20, 40, 40);
@@ -107,7 +107,7 @@ QPainterPath Node::shape() const
 
 
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
+void V_Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     //painter->setPen(Qt::NoPen);
     //painter->setBrush(Qt::darkGray);
@@ -144,7 +144,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
 }
 
-QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant V_Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     switch (change) {
     case ItemPositionHasChanged:
@@ -159,13 +159,13 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItem::itemChange(change, value);
 }
 
-void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void V_Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void V_Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);

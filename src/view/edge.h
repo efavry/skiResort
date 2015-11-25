@@ -2,14 +2,14 @@
 #define GRAPH_EDGE_H
 
 #include <QGraphicsItem>
-class Node;
+class V_Node;
 class Edge : public QGraphicsItem
 {
 public:
-    Edge(Node *sourceNode, Node *destNode, QString infoOnEdge="");
+    Edge(V_Node *sourceNode, V_Node *destNode, QString infoOnEdge="");
 
-    Node *sourceNode() const;
-    Node *destNode() const;
+    V_Node *sourceNode() const;
+    V_Node *destNode() const;
 
     void adjust();
     void setEdgeColor(Qt::GlobalColor col){edgeColor = col;}
@@ -23,7 +23,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private:
-    Node *source, *dest;
+    V_Node *source, *dest;
 
     qreal arrowSize;
     Qt::GlobalColor edgeColor;
