@@ -53,6 +53,7 @@ void GraphWidget::connectNode(V_Node*from,V_Node*to)
     scene()->addItem(new Edge(from,to));
 }
 */
+/*
 void GraphWidget::populate()
 {
     int sceneBoundX=this->scene()->width();
@@ -90,6 +91,7 @@ void GraphWidget::populate()
         scene()->addItem(new Edge(listOfNode[qrand() % listOfNode.size()],centerNode,QString("to witness the beauty of the ").append(QString::number(i)).append(" run") ));
     }
 }
+*/
 
 void GraphWidget::itemMoved()
 {
@@ -216,35 +218,41 @@ void GraphWidget::createNode(int id,string name,int altitude)
 {
     int sceneBoundX=this->scene()->width();
     int sceneBoundY=this->scene()->height();
-    V_Node vn;
-    if(centerNode)
+    V_Node* vn;
+    if(centerNode!=NULL)
         vn= new V_Node(this,id,QString::fromStdString(name));
     else
+    {
         vn = new V_Node(this,id,QString::fromStdString(name),true,true);
+        centerNode =vn;
+    }
     listOfNode.append(vn);
     scene()->addItem(vn);
     vn->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
 }
-void GraphWidget::createEdge(int fromId,int destId,int distance,int temps,TypeRoute typeRoute)
+void GraphWidget::createEdge(int fromId,int destId,int id,string name,int distance,int temps,TypeRoute typeRoute)
 {
     //first we retrieve the source node
-    V_Node* vnSource;
-    V_Node* vnDest;
+    V_Node* vnSource=NULL;
+    V_Node* vnDest=NULL;
     foreach(V_Node* vnSourceIt,listOfNode)
-        if(vnSourceIt.id == fromId)
+        if(vnSourceIt->id == fromId)
         {
             vnSource=vnSourceIt;
             break; //BEEEEEEH
         }
     //then retrieve the dest node
     foreach(V_Node* vnDestIt,listOfNode)
-        if(vnSourceIt.id == fromId)
+        if(vnDestIt->id == destId)
         {
             vnDest=vnDestIt;
             break; //BEEEEEEH
         }
     //then we create the edge
-    Edge *edgeToAdd = new Edge(vnSource,vnDest,distance,temps,typeRoute);
-    listOfEdge.append(edgeToAdd);
-    scene()->addItem(edgeToAdd);
+    if(vnSource!=NULL && vnDest!=NULL)
+    {
+        Edge *edgeToAdd = new Edge(vnSource,vnDest,id,QString::fromStdString(name),distance,temps,typeRoute);
+        listOfEdge.append(edgeToAdd);
+        scene()->addItem(edgeToAdd);
+    }
 }

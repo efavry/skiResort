@@ -11,13 +11,14 @@ class MC_talker
 {
 public:
     MC_talker();
-    MC_talker(const MC_talker&);
+    void populate();
     list<int> getNodeIDList();
     string getNodeNameFromId(int id);
     int getNodeAltitudeFromId(int id);
     list<int> getReachableNode(int id);
     void setGraphWidget(GraphWidget *graphWidget); //bouhahahah
 private:
+    MC_talker(const MC_talker&);
     GraphWidget *graphWidget;
     MC_graph *graph;
     MC_ReadDB *dbReader;
@@ -33,6 +34,7 @@ private:
     vector<int> tableIdEdge;
     vector<MC_edge *> modelEdge;
     vector<Edge *> viewEdge;
+
 };
 
 #endif // MC_TALKER_H

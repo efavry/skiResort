@@ -1,6 +1,6 @@
 //TODO : info on edge, draw an arc for the edge
+
 #include <QPainter>
-#include <iostream>
 #include "edge.h"
 #include "node.h"
 
@@ -8,10 +8,11 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-Edge::Edge(V_Node *sourceNode, V_Node *destNode, QString infoOnEdge)
-    : arrowSize(10),edgeColor(Qt::black),info(infoOnEdge)
+Edge::Edge(V_Node *sourceNode, V_Node *destNode,int id,QString _name,int _distance,int _temps, TypeRoute _typeRoute)
+    : arrowSize(10),idEdge(id),name(_name),distance(_distance),temps(_temps),typeRoute(_typeRoute)
 {
     setAcceptedMouseButtons(0);
+    edgeColor=findEdgeColor(_typeRoute);
     source = sourceNode;
     dest = destNode;
     source->addEdge(this);
@@ -56,13 +57,15 @@ QRectF Edge::boundingRect() const
     if (!source || !dest)
         return QRectF();
 
-    qreal penWidth = 1;
-    qreal extra = (penWidth + arrowSize) / 2.0;
+    //qreal penWidth = 1;
+    //qreal extra = (penWidth + arrowSize) / 2.0;
+    qreal extra =400;
 
     return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                       destPoint.y() - sourcePoint.y()))
                                                                        .normalized()
                                                                                     .adjusted(-extra, -extra, extra, extra);
+    //return QRect(sourcePoint, QSizeF )
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -101,5 +104,27 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     //draw info text
     painter->setPen(QPen(Qt::black, 0));
     //std::cout << this->info.size() << std::endl;
-    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,this->info);
+    QString info(name);
+    info.append(" Distance : ");
+    info.append(QString::number(distance));
+    info.append(" Temps : ");
+    info.append(QString::number(temps));
+    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,info);
+}
+
+QColor Edge::findEdgeColor(TypeRoute typeR)
+{
+    switch (typeR)
+    {
+        case TypeRoute::V:
+            return Qt::green;
+        case TypeRoute::B:
+            return Qt::blue;
+        case TypeRoute::R:
+            return Qt::red;
+        case TypeRoute::N:
+            return Qt::black;
+        default:
+            return Qt::gray;
+    }
 }

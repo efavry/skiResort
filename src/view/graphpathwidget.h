@@ -7,7 +7,7 @@ class GraphPathWidget : public GraphWidget
 {
 public:
     GraphPathWidget();
-    void populate();
+    //void populate();
 public slots:
     virtual void shuffle();
     virtual void zoomIn();

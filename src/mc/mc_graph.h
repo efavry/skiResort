@@ -19,7 +19,7 @@ private:
 public:
     MC_graph();
     void addNode(MC_node *);
-    void connectNode(MC_node *,MC_node *);
+    void connectNode(MC_node *,MC_node *,int,string,TypeRoute);
     list<MC_node *> dfs(MC_node* source);
     void unmarkAll();
     list<MC_node *> dijkstra(MC_node* startPoint, MC_node* endPoint); //return the ordered path from start node to end node
@@ -27,7 +27,7 @@ public:
     ~MC_graph();
 signals:
     void nodeCreated(int id,string name,int altitude);
-    void edgeCreated(int fromId,int destId,int id,int distance,int temps,TypeRoute typeRoute); //distance(slope : source.alt -dest.alt
+    void edgeCreated(int fromId,int destId,int id,string name,int distance,int temps,TypeRoute typeRoute); //distance(slope : source.alt -dest.alt
 }
 ;
 #endif // MC_GRAPH_H

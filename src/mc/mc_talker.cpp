@@ -1,6 +1,7 @@
 #include "list"
 #include "mc_talker.h"
 #include "../view/node.h"
+#include <QObject>
 #include <QString>
 #include <QList>
 using namespace std;
@@ -12,12 +13,18 @@ MC_talker::MC_talker()
         graph->addNode(new MC_node(i,QString::number(i).append("test").toStdString(),10000));
         graph->connectNode(graph->listOfNodes[]);
     }*/
+
+
+}
+
+void MC_talker::populate()
+{
     MC_node *node1=new MC_node(0,QString("ipsum node").toStdString(),10000);
-    MC_node *node2=new MC_node(1,QString("quia node").toStdString(),10000);
-    MC_node *node3=new MC_node(2,QString("dolor node").toStdString(),10000);
-    MC_node *node4=new MC_node(3,QString("sit node").toStdString(),10000);
-    MC_node *node5=new MC_node(4,QString("amet node").toStdString(),10000);
-    MC_node *node6=new MC_node(5,QString("gauss node").toStdString(),10000);
+    MC_node *node2=new MC_node(1,QString("quia node").toStdString(),500);
+    MC_node *node3=new MC_node(2,QString("dolor node").toStdString(),1000);
+    MC_node *node4=new MC_node(3,QString("sit node").toStdString(),400);
+    MC_node *node5=new MC_node(4,QString("amet node").toStdString(),1050);
+    MC_node *node6=new MC_node(5,QString("gauss node").toStdString(),2300);
 
     graph->addNode(node1);
     graph->addNode(node2);
@@ -26,12 +33,12 @@ MC_talker::MC_talker()
     graph->addNode(node5);
     graph->addNode(node6);
 
-    graph->connectNode(node1,node2);
-    graph->connectNode(node2,node3);
-    graph->connectNode(node3,node4);
-    graph->connectNode(node4,node5);
-
+    graph->connectNode(node1,node2,1,"premier e",TypeRoute::V);
+    graph->connectNode(node2,node3,2,"second e",TypeRoute::B);
+    graph->connectNode(node3,node4,3,"troisieme e",TypeRoute::TC);
+    graph->connectNode(node4,node5,4,"quatrieme e",TypeRoute::N);
 }
+
 
 list<int> MC_talker::getNodeIDList()
 {
@@ -76,8 +83,9 @@ list<int> MC_talker::getReachableNode(int id)
 
 void MC_talker::setGraphWidget(GraphWidget *graphW)
 {
+    /*
     //qlist for qt and std list for stl
-    graphWidget=graphW;
+
     V_Node* vn=NULL;
     for(MC_node* n: graph->listOfNodes)
     {
@@ -99,5 +107,9 @@ void MC_talker::setGraphWidget(GraphWidget *graphW)
                 for(MC_node* nToScan: nToLink->l_successors)
                     foreach(V_Node* vnToScan,graphWidget->listOfNode)
                         if(nToScan->id == vnToScan->id)
-                            graphWidget->connectNode(vnToLink,vnToScan);
+                            graphWidget->connectNode(vnToLink,vnToScan);*/
+    graphWidget=graphW;
+    QObject::connect(graph,SIGNAL(nodeCreated(int,string,int)),graphWidget,SLOT(createNode(int,string,int)));
+    QObject::connect(graph,SIGNAL(edgeCreated(int,int,int,string,int,int,TypeRoute)),
+         graphWidget,SLOT(createEdge(int,int,int,string,int,int,TypeRoute)));
 }

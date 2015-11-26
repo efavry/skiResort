@@ -1,18 +1,18 @@
 #ifndef GRAPH_EDGE_H
 #define GRAPH_EDGE_H
 #include "mc_type.h"
+#include <iostream>
 #include <QGraphicsItem>
 class V_Node;
 class Edge : public QGraphicsItem
 {
 public:
-    Edge(V_Node *sourceNode, V_Node *destNode,int distance=0,int temps=0,TypeRoute typeRoute = TypeRoute::NONE);
-
+    Edge(V_Node *sourceNode, V_Node *destNode,int id,QString _name=QString(),int distance=0,int temps=0,TypeRoute typeRoute = TypeRoute::NONE);
     V_Node *sourceNode() const;
     V_Node *destNode() const;
 
     void adjust();
-    void setEdgeColor(Qt::GlobalColor col){edgeColor = col;}
+    void setEdgeColor(QColor col){edgeColor = col;}
     void resetEdgeColor(){edgeColor = Qt::black;}
 
     enum { Type = UserType + 2 };
@@ -23,13 +23,20 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private:
+    QColor findEdgeColor(TypeRoute typeR);
     V_Node *source, *dest;
 
     qreal arrowSize;
-    Qt::GlobalColor edgeColor;
+    QColor edgeColor;
     QPointF sourcePoint;
     QPointF destPoint;
-    QString info;
+    int idEdge;
+    QString name;
+    int distance;
+    int temps;
+    TypeRoute typeRoute;
+
+
 };
 
 #endif //GRAPH_EDGE_H

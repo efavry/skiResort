@@ -21,7 +21,7 @@ RightWidget::RightWidget(MC_talker *mc,QWidget *parent) :
 
 void RightWidget::constructLevelGroup()
 {
-    QGroupBox *levelGroupBox = new QGroupBox("Level :");
+    QGroupBox *levelGroupBox = new QGroupBox("Reachable place with a level :");
 
     QComboBox *levelComboBox = new QComboBox();
     levelComboBox->addItem("Green");
@@ -114,6 +114,20 @@ void RightWidget::assignReachableNode(int i)
                     id
                     ))));
 }
+
+void RightWidget::assignReachableNodeWithCondition(int i,TypeRoute type)
+{
+    destComboBox->clear();
+    list<int> listOfReachedNode = mcTalker->getReachableNodeWithCondition(i,type);
+    for(int id:listOfReachedNode)
+        destComboBox->addItem(
+                    QString::number(id).append(" | ").append(
+                    QString::fromStdString(
+                    mcTalker->getNodeNameFromId(
+                    id
+                    ))));
+}
+
 
 void RightWidget::setInfoName(int i)
 {

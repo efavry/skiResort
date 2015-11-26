@@ -10,6 +10,7 @@ class QGraphicsSceneMouseEvent;
 class MC_talker;
 class V_Node : public QGraphicsItem
 {
+friend GraphWidget;
 friend MC_talker;
 public:
     V_Node(GraphWidget *graphWidget,int i=-1,QString _text=QString(), bool isActive = true, bool isCenterNode = false);

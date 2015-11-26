@@ -106,6 +106,7 @@ MC_graph::~MC_graph()
 }
 
 //singals
+/*
 void MC_graph::nodeCreated(int id,string name,int altitude)
 {
     Q_UNUSED(id);
@@ -113,12 +114,15 @@ void MC_graph::nodeCreated(int id,string name,int altitude)
     Q_UNUSED(altitude);
     return;
 }
-void MC_graph::edgeCreated(int fromId,int destId,int id,int distance,int temps,TypeRoute typeRoute)
+void MC_graph::edgeCreated(int fromId,int destId,int id,string name,int distance,int temps,TypeRoute typeRoute)
 {
     Q_UNUSED(fromId);
     Q_UNUSED(destId);
+    Q_UNUSED(id);
+    Q_UNUSED(name);
     Q_UNUSED(distance);
     Q_UNUSED(temps);
     Q_UNUSED(typeRoute);
     return;
 }
+*/

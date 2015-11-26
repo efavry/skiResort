@@ -15,6 +15,7 @@ GraphPathWidget::GraphPathWidget()
 
 
 //inherited
+/*
 void GraphPathWidget::populate()
 {
     int nbNode=10;
@@ -40,6 +41,7 @@ void GraphPathWidget::populate()
         prevNode=n;
     }
 }
+*/
 
 void GraphPathWidget::shuffle(){return;}
 void GraphPathWidget::zoomIn(){return;}

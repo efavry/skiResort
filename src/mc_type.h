@@ -15,7 +15,7 @@ enum TypeRoute{
     KL, //for track skiing
     SURF, //area reserved for surfing
     NONE
-}
+};
 
 
 #endif // MC_TYPE_H

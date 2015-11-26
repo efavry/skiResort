@@ -18,11 +18,12 @@ int main(int argc, char **argv)
     mc->setGraphWidget(widget);
     //widget->populate();
 
+    mc->populate();
 
     layout->addWidget(widget,1,1,20,20);
 
     GraphPathWidget *pathWidget = new GraphPathWidget();
-    pathWidget->populate();
+    //pathWidget->populate();
     layout->addWidget(pathWidget,21,1,1,20);
 
 
