@@ -43,6 +43,7 @@ private:
     GraphWidget *graph;
     int id;
     QString text;
+    bool elected=false;
     bool activated;
     bool centerNode;
 };

@@ -16,6 +16,8 @@ void MC_node::markNode()
 {
     this->b_mark=true;
 }
+
+
 void MC_node::unmarkNode()
 {
     this->b_mark=false;

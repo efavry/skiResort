@@ -17,6 +17,7 @@ public:
     int getNodeAltitudeFromId(int id);
     list<int> getReachableNode(int id);
     list<int> getReachableNodeWithCondition(int id,TypeRoute tr);
+    void startShortestPath(int,int);
     void setGraphWidget(GraphWidget *graphWidget); //bouhahahah
 private:
     MC_talker(const MC_talker&);
@@ -35,6 +36,8 @@ private:
     vector<int> tableIdEdge;
     vector<MC_edge *> modelEdge;
     vector<Edge *> viewEdge;
+
+
 
 };
 

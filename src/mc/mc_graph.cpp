@@ -96,6 +96,10 @@ void MC_graph::dfsRec(MC_node* n,list<MC_node *> *reachableNodeList,TypeRoute tr
     }
 }
 
+void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
+{
+    std::cout << "MC_Graph : dijkstra"<< startPoint->id << " to " << endPoint->id << std::endl;
+}
 
 MC_graph::~MC_graph()
 {

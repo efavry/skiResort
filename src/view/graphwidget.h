@@ -27,6 +27,8 @@ public slots:
     virtual void shuffle();
     virtual void zoomIn();
     virtual void zoomOut();
+    void resetElection();
+    void electSignal(int);
     void createNode(int id,string name,int altitude);
     void createEdge(int fromId,int destId,int id,string name,int distance,int temps,TypeRoute typeRoute);
 

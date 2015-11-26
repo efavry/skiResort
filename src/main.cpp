@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QObject>
 
 #include "view/graphwidget.h"
 #include "view/graphpathwidget.h"
@@ -26,8 +27,9 @@ int main(int argc, char **argv)
     //pathWidget->populate();
     layout->addWidget(pathWidget,21,1,1,20);
 
-
-    layout->addWidget(new RightWidget(mc),1,21,1,1);
+    RightWidget *rwidget = new RightWidget(mc);
+    layout->addWidget(rwidget,1,21,1,1);
+    QObject::connect(rwidget,SIGNAL(resetElectionSig()),widget,SLOT(resetElection()));
     QWidget mainWindow;
     mainWindow.setLayout(layout);
     mainWindow.showMaximized();

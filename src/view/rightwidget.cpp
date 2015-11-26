@@ -30,6 +30,8 @@ void RightWidget::constructLevelGroup()
     levelComboBox->addItem("Black");
     //levelComboBox->addItem("None");
     levelComboBox->setCurrentIndex(-1);
+    connect(levelComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(sendAResetElectionSig()));
     connect(levelComboBox,SIGNAL(activated(int)),
             this,SLOT(assignRouteCondition(int)));
 
@@ -49,10 +51,13 @@ void RightWidget::constructLevelGroup()
 
     reachableLevelComboBox = new QComboBox();
     connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(sendAResetElectionSig()));
+    connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(assignReachableNodeWithCondition(int)));
 
     QGridLayout *groupBoxLayout = new QGridLayout();
-    groupBoxLayout->addWidget(levelComboBox,0,1,1,1);
+    groupBoxLayout->addWidget(new QLabel("Level :"),0,1,1,1);
+    groupBoxLayout->addWidget(levelComboBox,0,2,1,2);
     groupBoxLayout->addWidget(new QLabel("Start point :"),1,1,1,1);
     groupBoxLayout->addWidget(sourceComboBox,1,2,1,2);
     groupBoxLayout->addWidget(new QLabel("Reachable point :"),2,1,1,1);
@@ -80,18 +85,28 @@ void RightWidget::constructPathGroup()
                              id
                              ))));
     }
+    sourceComboBox->setCurrentIndex(-1);
 
     connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(sendAResetElectionSig()));
+    connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(assignReachableNode(int)));
+    connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(assignSourceNodeId(int)));
     destComboBox = new QComboBox();
 
+    connect(destComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(assignDestNodeId(int)));
 
     QGridLayout *groupBoxLayout = new QGridLayout();
     groupBoxLayout->addWidget(new QLabel("Start point :"),1,1,1,1);
     groupBoxLayout->addWidget(sourceComboBox,1,2,1,2);
     groupBoxLayout->addWidget(new QLabel("End point :"),2,1,1,1);
     groupBoxLayout->addWidget(destComboBox,2,2,1,2);
-    groupBoxLayout->addWidget(new QPushButton("Compute !"),3,1,1,3);
+
+    QPushButton *computeButton=new QPushButton("Compute !");
+    connect(computeButton,SIGNAL(clicked()),this,SLOT(startShortestPath()));
+    groupBoxLayout->addWidget(computeButton,3,1,1,3);
 
     pathGroupBox->setLayout(groupBoxLayout);
 
@@ -167,6 +182,7 @@ void RightWidget::assignReachableNode(int i)
 
 void RightWidget::assignReachableNodeWithCondition(int i/*,TypeRoute type*/)
 {
+
     std::cout<<"View : Level DFS : Places selected " << i << " tr : " << trCondition << std::endl;
     reachableLevelComboBox->clear();
     list<int> listOfReachedNode = mcTalker->getReachableNodeWithCondition(i,trCondition);

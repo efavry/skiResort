@@ -23,6 +23,7 @@ public:
     MC_node(int,string,int);
 
     bool isMarkedNode();
+    void selectNode(){emit selectedSignal(id);}
     void markNode();
     void unmarkNode();
     void addOutCommingEdge(MC_node*); //more like add son
@@ -30,7 +31,8 @@ public:
     //MC_node &operator=(const MC_node&); // operator =: not coded because WE WANT to comapre the adress of the pointer
     ~MC_node();
 
-
+signals:
+    void selectedSignal(int);
 }
 ;
 

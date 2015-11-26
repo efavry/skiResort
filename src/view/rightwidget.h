@@ -24,14 +24,22 @@ private :
 
     //condition
     TypeRoute trCondition=TypeRoute::NONE;
-signals:
 
+    //path
+    int idSource;
+    int idDest;
+signals:
+    void resetElectionSig();
 public slots:
+    void sendAResetElectionSig(){emit resetElectionSig();}
     void assignRouteCondition(int);
     void assignReachableNode(int);
     void assignReachableNodeWithCondition(int/*,TypeRoute*/);
     void setInfoName(int);
     void setInfoAltitude(int);
+    void assignSourceNodeId(int id){idSource=id;}
+    void assignDestNodeId(int id){idDest=id;}
+    void startShortestPath(){mcTalker->startShortestPath(idSource,idDest);}
 };
 
 #endif // RIGHTWIDGET_H

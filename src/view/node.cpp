@@ -109,10 +109,6 @@ QPainterPath V_Node::shape() const
 
 void V_Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
-    //painter->setPen(Qt::NoPen);
-    //painter->setBrush(Qt::darkGray);
-    //painter->drawEllipse(-7, -7, 20, 20);
-    //this->shape()
     QRadialGradient gradient(-3, -3, 10);
     if (option->state & QStyle::State_Sunken)
     {
@@ -124,35 +120,25 @@ void V_Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     else
         //gradient.setColorAt(0, Qt::white);
         gradient.setColorAt(0, QColor(255,255,255,128));
+    if(elected==true)
+        gradient.setColorAt(0, Qt::cyan);
     painter->setBrush(gradient);
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-20, -20, 40, 40);
-
-/*
-    if(centerNode)
-    {
-
-        painter->drawText(QPointF(-30,4), QString("CenterNode"));
-    }
-    else
-    {*/
-        //QString txtToPrint("t");
-        //txtToPrint.append(QString::number(this->pos().x()));
-        //painter->drawText(QPointF(-(txtToPrint.size()*3),4), txtToPrint);
-        painter->drawText(QPointF(-(text.size()*3),4), text);
-  /*  }*/
+    painter->drawText(QPointF(-(text.size()*3),4), text);
 }
 
 QVariant V_Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    switch (change) {
-    case ItemPositionHasChanged:
-        foreach (Edge *edge, edgeList)
-            edge->adjust();
-        graph->itemMoved();
-        break;
-    default:
-        break;
+    switch (change)
+    {
+        case ItemPositionHasChanged:
+            foreach (Edge *edge, edgeList)
+                edge->adjust();
+            graph->itemMoved();
+            break;
+        default:
+            break;
     };
 
     return QGraphicsItem::itemChange(change, value);

@@ -214,6 +214,25 @@ void GraphWidget::zoomOut()
     scaleView(1 / qreal(1.2));
 }
 
+void GraphWidget::electSignal(int i)
+{
+
+    foreach (V_Node* vn, this->listOfNode)
+        if(vn->id == i)
+        {
+            vn->elected = true;
+            vn->update();
+        }
+}
+void GraphWidget::resetElection()
+{
+    foreach (V_Node* vn, this->listOfNode)
+     {
+        vn->elected = false;
+        vn->update();
+    }
+}
+
 void GraphWidget::createNode(int id,string name,int altitude)
 {
     int sceneBoundX=this->scene()->width();

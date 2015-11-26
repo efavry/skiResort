@@ -22,7 +22,7 @@ public:
     void connectNode(MC_node *,MC_node *,int,string,TypeRoute tr=TypeRoute::NONE);
     list<MC_node *> dfs(MC_node* source,TypeRoute tr=TypeRoute::NONE);
     void unmarkAll();
-    list<MC_node *> dijkstra(MC_node* startPoint, MC_node* endPoint); //return the ordered path from start node to end node
+    /*list<MC_node *>*/void dijkstra(MC_node* startPoint, MC_node* endPoint); //return the ordered path from start node to end node
     list<MC_node *>& getListOfNodes(){return listOfNodes;}
     ~MC_graph();
 signals:
