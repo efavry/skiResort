@@ -14,13 +14,13 @@ class MC_graph : public QObject//in fact it is a digraph
 friend MC_talker;
 private:
     list<MC_node *> listOfNodes; //will usefull for unmark or things like that
-    void dfsRec(MC_node* n,list<MC_node *>*);
+    void dfsRec(MC_node* n,list<MC_node *>*,TypeRoute);
     MC_graph(const MC_graph&);
 public:
     MC_graph();
     void addNode(MC_node *);
-    void connectNode(MC_node *,MC_node *,int,string,TypeRoute);
-    list<MC_node *> dfs(MC_node* source);
+    void connectNode(MC_node *,MC_node *,int,string,TypeRoute tr=TypeRoute::NONE);
+    list<MC_node *> dfs(MC_node* source,TypeRoute tr=TypeRoute::NONE);
     void unmarkAll();
     list<MC_node *> dijkstra(MC_node* startPoint, MC_node* endPoint); //return the ordered path from start node to end node
     list<MC_node *>& getListOfNodes(){return listOfNodes;}

@@ -81,6 +81,17 @@ list<int> MC_talker::getReachableNode(int id)
     return listOfNodeId;
 }
 
+list<int> MC_talker::getReachableNodeWithCondition(int id,TypeRoute tr)
+{
+    list<MC_node *> listOfReachedNode;
+    listOfReachedNode = graph->dfs(getNodeFromId(id),tr);
+
+    list<int> listOfNodeId;
+    for(MC_node *n:listOfReachedNode)
+        listOfNodeId.push_back(n->id);
+    return listOfNodeId;
+}
+
 void MC_talker::setGraphWidget(GraphWidget *graphW)
 {
     /*

@@ -1,6 +1,6 @@
 #include "rightwidget.h"
 #include <QtGui>
-
+#include <iostream>
 RightWidget::RightWidget(MC_talker *mc,QWidget *parent) :
     QWidget(parent)
 {
@@ -28,16 +28,47 @@ void RightWidget::constructLevelGroup()
     levelComboBox->addItem("Blue");
     levelComboBox->addItem("Red");
     levelComboBox->addItem("Black");
+    //levelComboBox->addItem("None");
+    levelComboBox->setCurrentIndex(-1);
+    connect(levelComboBox,SIGNAL(activated(int)),
+            this,SLOT(assignRouteCondition(int)));
 
-    levelGroupBox->setLayout(new QVBoxLayout());
-    levelGroupBox->layout()->addWidget(levelComboBox);
+    QComboBox *sourceComboBox = new QComboBox();
+    for(int id:mcTalker->getNodeIDList())
+    {
+        sourceComboBox->addItem(
+                             QString::number(id).append(" | ").append(
+                             QString::fromStdString(
+                             mcTalker->getNodeNameFromId(
+                             id
+                             ))));
+    }
+
+    sourceComboBox->setCurrentIndex(-1);
+
+
+    reachableLevelComboBox = new QComboBox();
+    connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(assignReachableNodeWithCondition(int)));
+
+    QGridLayout *groupBoxLayout = new QGridLayout();
+    groupBoxLayout->addWidget(levelComboBox,0,1,1,1);
+    groupBoxLayout->addWidget(new QLabel("Start point :"),1,1,1,1);
+    groupBoxLayout->addWidget(sourceComboBox,1,2,1,2);
+    groupBoxLayout->addWidget(new QLabel("Reachable point :"),2,1,1,1);
+    groupBoxLayout->addWidget(reachableLevelComboBox,2,2,1,2);
+
+
+
+    levelGroupBox->setLayout(groupBoxLayout);
+
 
     layout->addWidget(levelGroupBox);
 }
 
 void RightWidget::constructPathGroup()
 {
-    QGroupBox *pathGroupBox = new QGroupBox("Compute a path :");
+    QGroupBox *pathGroupBox = new QGroupBox("Compute a shortest path :");
 
     QComboBox *sourceComboBox = new QComboBox();
     for(int id:mcTalker->getNodeIDList())
@@ -53,11 +84,7 @@ void RightWidget::constructPathGroup()
     connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(assignReachableNode(int)));
     destComboBox = new QComboBox();
-    destComboBox->addItem("ipsum");
-    destComboBox->addItem("quia");
-    destComboBox->addItem("dolor");
-    destComboBox->addItem("sit");
-    destComboBox->addItem("amet");
+
 
     QGridLayout *groupBoxLayout = new QGridLayout();
     groupBoxLayout->addWidget(new QLabel("Start point :"),1,1,1,1);
@@ -85,6 +112,7 @@ void RightWidget::constructInfoGroup()
                              id
                              ))));
     }
+    nodeComboBox->setCurrentIndex(-1);
     labelName = new QLabel("Name : ");
     labelAltitude = new QLabel("Elevation : ");
     connect(nodeComboBox,SIGNAL(currentIndexChanged(int)),
@@ -101,6 +129,28 @@ void RightWidget::constructInfoGroup()
 
 
 //slots
+void RightWidget::assignRouteCondition(int i)
+{   std::cout<< "View : Level : Route condition : " << i << std::endl;
+    switch (i)
+    {
+        case 0:
+            trCondition=TypeRoute::V;
+            break;
+        case 1:
+            trCondition=TypeRoute::B;
+            break;
+        case 2:
+            trCondition=TypeRoute::R;
+            break;
+        case 3:
+            trCondition=TypeRoute::N;
+            break;
+        default:
+            trCondition=TypeRoute::NONE;
+
+    }
+    return;
+}
 
 void RightWidget::assignReachableNode(int i)
 {
@@ -115,17 +165,18 @@ void RightWidget::assignReachableNode(int i)
                     ))));
 }
 
-void RightWidget::assignReachableNodeWithCondition(int i,TypeRoute type)
+void RightWidget::assignReachableNodeWithCondition(int i/*,TypeRoute type*/)
 {
-    destComboBox->clear();
-    list<int> listOfReachedNode = mcTalker->getReachableNodeWithCondition(i,type);
+    std::cout<<"View : Level DFS : Places selected " << i << " tr : " << trCondition << std::endl;
+    reachableLevelComboBox->clear();
+    list<int> listOfReachedNode = mcTalker->getReachableNodeWithCondition(i,trCondition);
     for(int id:listOfReachedNode)
-        destComboBox->addItem(
-                    QString::number(id).append(" | ").append(
-                    QString::fromStdString(
-                    mcTalker->getNodeNameFromId(
-                    id
-                    ))));
+        reachableLevelComboBox->addItem(
+                            QString::number(id).append(" | ").append(
+                            QString::fromStdString(
+                            mcTalker->getNodeNameFromId(
+                            id
+                            ))));
 }
 
 

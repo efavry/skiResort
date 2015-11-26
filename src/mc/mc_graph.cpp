@@ -17,7 +17,6 @@ void MC_graph::addNode(MC_node *n)
 void MC_graph::connectNode(MC_node *from,MC_node *to,int id,string name,TypeRoute typeRoute)
 {//can be used later on to use edges defined by a class
     cout << "Connecting " << from->id << "to" << to->id << endl;
-    from->addNeighbor(to);
     //TODO ajouter info dans le modele
     int distance = abs(from->altitude - to->altitude);
     int temps;
@@ -64,6 +63,7 @@ void MC_graph::connectNode(MC_node *from,MC_node *to,int id,string name,TypeRout
         default:
             temps=distanceCalc;
     }
+    from->addNeighbor(new MC_edge(from,to,id,distance,temps,typeRoute));
     emit edgeCreated(from->id,to->id,id,name,distance,temps,typeRoute);
 }
 
@@ -74,30 +74,34 @@ void MC_graph::unmarkAll()
         n->unmarkNode();
 }
 
-list<MC_node*> MC_graph::dfs(MC_node* n)
+list<MC_node*> MC_graph::dfs(MC_node* n,TypeRoute tr)
 {
     list<MC_node *> reachableNodeList;
     this->unmarkAll();
     //for(MC_node* m:this->listOfNodes) //for each unreached node we dfs it (yes the above line is usless)
-        this->dfsRec(/*m*/n,&reachableNodeList);
+    this->dfsRec(/*m*/n,&reachableNodeList,tr);
     return reachableNodeList;
 }
 
-void MC_graph::dfsRec(MC_node* n,list<MC_node *> *reachableNodeList)
+void MC_graph::dfsRec(MC_node* n,list<MC_node *> *reachableNodeList,TypeRoute tr)
 {
     if(!n->isMarkedNode())
     {
         reachableNodeList->push_back(n);
         n->markNode();
-        cout << "DFS : I'm " << n->id << endl;
-        for(MC_node* m:n->l_successors)
-                this->dfsRec(m,reachableNodeList);
+        //cout << "DFS : I'm " << n->id << endl;
+        for(MC_edge* edge:n->l_successors)
+            if(tr==edge->typeRoute || tr == TypeRoute::NONE) //if a color is conditioned are no condition for the dfs
+                this->dfsRec(edge->dest,reachableNodeList,tr);
     }
 }
 
 
 MC_graph::~MC_graph()
 {
+    for(MC_node* n: this->listOfNodes)
+        for(MC_edge* edge: n->l_successors)
+            delete edge;
     while(!this->listOfNodes.empty())
     {
         delete this->listOfNodes.front();

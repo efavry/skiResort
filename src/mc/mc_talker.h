@@ -16,6 +16,7 @@ public:
     string getNodeNameFromId(int id);
     int getNodeAltitudeFromId(int id);
     list<int> getReachableNode(int id);
+    list<int> getReachableNodeWithCondition(int id,TypeRoute tr);
     void setGraphWidget(GraphWidget *graphWidget); //bouhahahah
 private:
     MC_talker(const MC_talker&);

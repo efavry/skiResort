@@ -21,9 +21,9 @@ void MC_node::unmarkNode()
     this->b_mark=false;
     this->predecessor=NULL;
 }
-void MC_node::addNeighbor(MC_node * n)
+void MC_node::addNeighbor(MC_edge * edge)
 {
-    this->l_successors.push_back(n);
+    this->l_successors.push_back(edge);
 }
 /*
 void node::addParent(node * n)

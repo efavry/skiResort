@@ -2,9 +2,12 @@
 #define MC_NODE_H
 #include <list>
 #include <string>
+#include <QObject>
 using namespace std;
-class MC_node
+class MC_edge;
+class MC_node :QObject
 {
+    Q_OBJECT
 private:
     friend class MC_talker;
     friend class MC_graph;
@@ -12,10 +15,10 @@ private:
     string name;
     int altitude;
     bool b_mark;
-    list<MC_node*> l_successors;
+    list<MC_edge*> l_successors;
     MC_node* predecessor;
     MC_node (const MC_node&); //copy constructor
-    void addNeighbor(MC_node * n);
+    void addNeighbor(MC_edge * edge);
 public:
     MC_node(int,string,int);
 
@@ -25,7 +28,9 @@ public:
     void addOutCommingEdge(MC_node*); //more like add son
     void depthFirsSearchRecursive(int id);
     //MC_node &operator=(const MC_node&); // operator =: not coded because WE WANT to comapre the adress of the pointer
-    ~MC_node(); //detructor
+    ~MC_node();
+
+
 }
 ;
 
