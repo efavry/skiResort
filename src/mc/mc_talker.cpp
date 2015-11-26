@@ -1,6 +1,8 @@
 #include "list"
 #include "mc_talker.h"
+#include "../view/node.h"
 #include <QString>
+#include <QList>
 using namespace std;
 MC_talker::MC_talker()
 {
@@ -43,6 +45,7 @@ string MC_talker::getNodeNameFromId(int id)
     for(MC_node* n: graph->getListOfNodes())
             if (n->id == id)
                 return n->name;
+    return string();
 }
 int MC_talker::getNodeAltitudeFromId(int id)
 {
@@ -71,8 +74,30 @@ list<int> MC_talker::getReachableNode(int id)
     return listOfNodeId;
 }
 
-void MC_talker::setGraphWidget(GraphWidget *graph)
+void MC_talker::setGraphWidget(GraphWidget *graphW)
 {
-    graphWidget=graph;
-    graph->
+    //qlist for qt and std list for stl
+    graphWidget=graphW;
+    V_Node* vn=NULL;
+    for(MC_node* n: graph->listOfNodes)
+    {
+        if(vn==NULL)
+        {
+            vn = new V_Node(graphWidget,n->id,QString::fromStdString(n->name),true,true);
+            graphWidget->addCenterNode(vn);
+        }
+        else
+        {
+            vn = new V_Node(graphWidget,n->id,QString::fromStdString(n->name));
+            graphWidget->addNode(vn);
+        }
+    }
+
+    for(MC_node* nToLink: graph->listOfNodes)
+        foreach(V_Node* vnToLink,graphWidget->listOfNode)
+            if(nToLink->id == vnToLink->id)
+                for(MC_node* nToScan: nToLink->l_successors)
+                    foreach(V_Node* vnToScan,graphWidget->listOfNode)
+                        if(nToScan->id == vnToScan->id)
+                            graphWidget->connectNode(vnToLink,vnToScan);
 }

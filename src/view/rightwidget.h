@@ -25,7 +25,6 @@ public slots:
     void assignReachableNode(int);
     void setInfoName(int);
     void setInfoAltitude(int);
-
 };
 
 #endif // RIGHTWIDGET_H

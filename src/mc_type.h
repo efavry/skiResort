@@ -4,6 +4,7 @@
 enum TypeRoute{
     TK, //fo ski lift
     TS, //for chair lift
+    TSD, //Special char lift
     TC, //for cabin
     TPH, //for telepheric
     BUS, //for shuttle bus
@@ -12,8 +13,8 @@ enum TypeRoute{
     R, //for red psite
     N, //for black piste
     KL, //for track skiing
-    SURF //area reserved for surfing
-
+    SURF, //area reserved for surfing
+    NONE
 }
 
 

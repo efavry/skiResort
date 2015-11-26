@@ -27,15 +27,39 @@ GraphWidget::GraphWidget(QWidget *parent,
     scale(scaleFactorX, scaleFactorY);
     //setViewport(new QGLWidget());
 }
+/*
+void GraphWidget::addNode(V_Node *vn)
+{
+    int sceneBoundX=this->scene()->width();
+    int sceneBoundY=this->scene()->height();
+    listOfNode.append(vn);
+    scene()->addItem(vn);
+    vn->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
+}
 
-
+void GraphWidget::addCenterNode(V_Node *vn)
+{
+    int sceneBoundX=this->scene()->width();
+    int sceneBoundY=this->scene()->height();
+    listOfNode.append(vn);
+    scene()->addItem(vn);
+    vn->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
+    centerNode = vn;
+}
+*/
+/*
+void GraphWidget::connectNode(V_Node*from,V_Node*to)
+{
+    scene()->addItem(new Edge(from,to));
+}
+*/
 void GraphWidget::populate()
 {
     int sceneBoundX=this->scene()->width();
     int sceneBoundY=this->scene()->height();
     if(centerNode == NULL)
     {
-        centerNode = new V_Node(this,true,true);
+        centerNode = new V_Node(this,1,QString("lol"),true,true);
         scene()->addItem(centerNode);
         centerNode->setPos(sceneBoundX/2, sceneBoundY/2);
         listOfNode.append(centerNode);
@@ -44,7 +68,7 @@ void GraphWidget::populate()
     QList<V_Node *> listOfNodeToAdd;
     for(int i=0;i<36;++i )
     {
-        listOfNodeToAdd.append(new V_Node(this));
+        listOfNodeToAdd.append(new V_Node(this,1,QString()));
     }
     foreach(V_Node* n , listOfNodeToAdd)
     {
@@ -75,31 +99,32 @@ void GraphWidget::itemMoved()
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key()) {
-    case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
-        break;
-    case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
-        break;
-    case Qt::Key_Plus:
-        zoomIn();
-        break;
-    case Qt::Key_Minus:
-        zoomOut();
-        break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        shuffle();
-        break;
-    default:
-        QGraphicsView::keyPressEvent(event);
+    switch (event->key())
+    {
+        case Qt::Key_Up:
+            centerNode->moveBy(0, -20);
+            break;
+        case Qt::Key_Down:
+            centerNode->moveBy(0, 20);
+            break;
+        case Qt::Key_Left:
+            centerNode->moveBy(-20, 0);
+            break;
+        case Qt::Key_Right:
+            centerNode->moveBy(20, 0);
+            break;
+        case Qt::Key_Plus:
+            zoomIn();
+            break;
+        case Qt::Key_Minus:
+            zoomOut();
+            break;
+        case Qt::Key_Space:
+        case Qt::Key_Enter:
+            shuffle();
+            break;
+        default:
+            QGraphicsView::keyPressEvent(event);
     }
 }
 
@@ -160,6 +185,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
+//signals
 void GraphWidget::shuffle()
 {
     int sceneBoundX=this->scene()->width();
@@ -184,4 +210,41 @@ void GraphWidget::zoomIn()
 void GraphWidget::zoomOut()
 {
     scaleView(1 / qreal(1.2));
+}
+
+void GraphWidget::createNode(int id,string name,int altitude)
+{
+    int sceneBoundX=this->scene()->width();
+    int sceneBoundY=this->scene()->height();
+    V_Node vn;
+    if(centerNode)
+        vn= new V_Node(this,id,QString::fromStdString(name));
+    else
+        vn = new V_Node(this,id,QString::fromStdString(name),true,true);
+    listOfNode.append(vn);
+    scene()->addItem(vn);
+    vn->setPos(qrand() % sceneBoundX,qrand() % sceneBoundY);
+}
+void GraphWidget::createEdge(int fromId,int destId,int distance,int temps,TypeRoute typeRoute)
+{
+    //first we retrieve the source node
+    V_Node* vnSource;
+    V_Node* vnDest;
+    foreach(V_Node* vnSourceIt,listOfNode)
+        if(vnSourceIt.id == fromId)
+        {
+            vnSource=vnSourceIt;
+            break; //BEEEEEEH
+        }
+    //then retrieve the dest node
+    foreach(V_Node* vnDestIt,listOfNode)
+        if(vnSourceIt.id == fromId)
+        {
+            vnDest=vnDestIt;
+            break; //BEEEEEEH
+        }
+    //then we create the edge
+    Edge *edgeToAdd = new Edge(vnSource,vnDest,distance,temps,typeRoute);
+    listOfEdge.append(edgeToAdd);
+    scene()->addItem(edgeToAdd);
 }

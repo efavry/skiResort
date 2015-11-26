@@ -20,14 +20,14 @@ void GraphPathWidget::populate()
     int nbNode=10;
     int sceneBoundX=this->scene()->width();
     int sceneBoundY=this->scene()->height();
-    centerNode = new V_Node(this,false);
+    centerNode = new V_Node(this,1,QString("center"),false);
     scene()->addItem(centerNode);
     centerNode->setPos(30, sceneBoundY/2);
     centerNode->setAsCenterNode();
     //QList<V_Node*> listOfNode;
     for(int i=0;i<nbNode;++i )
     {
-        listOfNode.append(new V_Node(this,false));
+        listOfNode.append(new V_Node(this,1,QString("lol"),false));
     }
     V_Node *prevNode=centerNode;
     int i = 30;

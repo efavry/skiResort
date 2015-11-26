@@ -7,11 +7,12 @@
 class Edge;
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
-
+class MC_talker;
 class V_Node : public QGraphicsItem
 {
+friend MC_talker;
 public:
-    V_Node(GraphWidget *graphWidget, bool isActive = true, bool isCenterNode = false);
+    V_Node(GraphWidget *graphWidget,int i=-1,QString _text=QString(), bool isActive = true, bool isCenterNode = false);
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
@@ -36,11 +37,13 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    bool centerNode;
-    bool activated;
     QList<Edge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
+    int id;
+    QString text;
+    bool activated;
+    bool centerNode;
 };
 
 #endif // GRAPH_NODE_H

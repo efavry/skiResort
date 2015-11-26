@@ -1,12 +1,12 @@
 #ifndef GRAPH_EDGE_H
 #define GRAPH_EDGE_H
-
+#include "mc_type.h"
 #include <QGraphicsItem>
 class V_Node;
 class Edge : public QGraphicsItem
 {
 public:
-    Edge(V_Node *sourceNode, V_Node *destNode, QString infoOnEdge="");
+    Edge(V_Node *sourceNode, V_Node *destNode,int distance=0,int temps=0,TypeRoute typeRoute = TypeRoute::NONE);
 
     V_Node *sourceNode() const;
     V_Node *destNode() const;

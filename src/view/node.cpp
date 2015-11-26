@@ -8,8 +8,8 @@
 #include "node.h"
 #include "graphwidget.h"
 
-V_Node::V_Node(GraphWidget *graphWidget,bool isActive, bool isCenterNode)
-    : graph(graphWidget)
+V_Node::V_Node(GraphWidget *graphWidget,int i,QString _text,bool isActive, bool isCenterNode)
+    : graph(graphWidget),text(_text),id(i)
 {
     if(isActive)
         setFlag(ItemIsMovable);
@@ -128,20 +128,19 @@ void V_Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-20, -20, 40, 40);
 
-
+/*
     if(centerNode)
     {
 
         painter->drawText(QPointF(-30,4), QString("CenterNode"));
     }
     else
-    {
-        QString txtToPrint("t");
-        txtToPrint.append(QString::number(this->pos().x()));
-        //std::cout << txtToPrint.toStdString() << std::endl;
-        //std::cout << txtToPrint.size() << std::endl;
-        painter->drawText(QPointF(-(txtToPrint.size()*3),4), txtToPrint);
-    }
+    {*/
+        //QString txtToPrint("t");
+        //txtToPrint.append(QString::number(this->pos().x()));
+        //painter->drawText(QPointF(-(txtToPrint.size()*3),4), txtToPrint);
+        painter->drawText(QPointF(-(text.size()*3),4), text);
+  /*  }*/
 }
 
 QVariant V_Node::itemChange(GraphicsItemChange change, const QVariant &value)
