@@ -98,7 +98,64 @@ void MC_graph::dfsRec(MC_node* n,list<MC_node *> *reachableNodeList,TypeRoute tr
 
 void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
 {
+    //verifions si le noued est ateignable
+
+
     std::cout << "MC_Graph : dijkstra"<< startPoint->id << " to " << endPoint->id << std::endl;
+    int mini=INT_MAX; //thisvar will help to find the minimum weight
+    list<MC_node*> l_opened;
+    //the actual structure of the graph give a list of node whichi will be used extensively with the mark
+    //initialisation
+    unmarkAll(); //well unmark all node and setup all node to infinity (INT_MAX)
+    startPoint->weight=0; //we setup the source node as fixed and weighted at 0
+    startPoint->fixed=true;
+    MC_node * electedNode=startPoint;
+
+    //the predecessor of startpoint is logically NULL
+    //while destnode weight is not fixed definitly
+    while(endPoint->fixed == false)
+    {
+        //we search all the unfixed node adjacent to the previously elected node
+        for(MC_edge* edge:electedNode->l_successors)
+        {
+            if(edge->dest->fixed==false)
+            {
+                l_opened.push_back(edge->dest);
+                edge->dest->predecessor=electedNode; //we temporary mark them with the previous weight + the edge weight
+                edge->dest->weight=electedNode->weight + edge->distance;
+            }
+            std::cout << "First for\n";
+        }
+        //now in the non definitly fixed node that we visited we find the minimal weight
+        //we fix the node that have this minimal weight
+        //we elect it
+        //we remove it from opened
+        //welcome toC++ ! when removing  with a foreach logically make a segfault but  you must iterate anyway so you use this :
+        list<MC_node*>::iterator minimalWeightNode = std::begin(l_opened);
+        while (minimalWeightNode != std::end(l_opened))
+        {
+            if ((*minimalWeightNode)->weight<mini)
+            {
+                electedNode = *minimalWeightNode; //an iterator "feel like a pointer"
+                electedNode->fixed=true;
+                //l_opened.remove(electedNode); //will call the destructor of the pointer but not of the actual object because we use ptr
+                minimalWeightNode = l_opened.erase(minimalWeightNode);
+                mini=(*minimalWeightNode)->weight;
+            }
+            else
+                ++minimalWeightNode;
+        }
+        mini=INT_MAX;
+    }
+    //reconstruct the path
+    MC_node* iter=endPoint; //our "iterator"
+    while(iter!=NULL)
+    {
+        iter->selectNode(); //signal that he is part of the path
+        iter=iter->predecessor;
+    }
+    //cleanup the mess
+    unmarkAll();
 }
 
 MC_graph::~MC_graph()

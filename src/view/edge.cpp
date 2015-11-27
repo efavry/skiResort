@@ -17,6 +17,7 @@ Edge::Edge(V_Node *sourceNode, V_Node *destNode,int id,QString _name,int _distan
     dest = destNode;
     source->addEdge(this);
     dest->addEdge(this);
+    offset = qrand()%5;
     adjust();
 }
 
@@ -73,15 +74,18 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (!source || !dest)
         return;
 
-    QLineF line(sourcePoint, destPoint);
+    QLineF line((sourcePoint.x())+this->offset,
+                (sourcePoint.y())+this->offset,
+                (destPoint.x())+this->offset,
+                (destPoint.y())+this->offset);
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
     // Draw the line itself
     painter->setPen(QPen(this->edgeColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
-/*
-    QPainterPath path;
+
+/*    QPainterPath path;
     path.moveTo(sourcePoint);//c0
     //c1 puis c2 puis c3
     path.cubicTo(sourcePoint.x()+ line.dx()/3,sourcePoint.y(), //c1
@@ -105,11 +109,15 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->setPen(QPen(Qt::black, 0));
     //std::cout << this->info.size() << std::endl;
     QString info(name);
-    info.append(" Distance : ");
-    info.append(QString::number(distance));
-    info.append(" Temps : ");
-    info.append(QString::number(temps));
     painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,info);
+    info.clear();
+    info.append("Distance : ");
+    info.append(QString::number(distance));
+    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+10/*,Qt::AlignHCenter,*/,info);
+    info.clear();
+    info.append("Temps : ");
+    info.append(QString::number(temps));
+    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+20/*,Qt::AlignHCenter,*/,info);
 }
 
 QColor Edge::findEdgeColor(TypeRoute typeR)

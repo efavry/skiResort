@@ -28,6 +28,7 @@ private :
     //path
     int idSource;
     int idDest;
+    QPushButton *computeButton;
 signals:
     void resetElectionSig();
 public slots:
@@ -39,7 +40,18 @@ public slots:
     void setInfoAltitude(int);
     void assignSourceNodeId(int id){idSource=id;}
     void assignDestNodeId(int id){idDest=id;}
-    void startShortestPath(){mcTalker->startShortestPath(idSource,idDest);}
+    void startShortestPath()
+    {
+        //checking if the path exist before calling shortest path
+        for(int i:mcTalker->getReachableNode(idSource))
+            if(i==idDest)
+            {
+                mcTalker->startShortestPath(idSource,idDest);
+                break;
+            }
+    }
+    void deactivatePathButton(){computeButton->setEnabled(false);}
+    void activatePathButton(){computeButton->setEnabled(true);}
 };
 
 #endif // RIGHTWIDGET_H

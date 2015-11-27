@@ -37,7 +37,7 @@ private:
     vector<MC_edge *> modelEdge;
     vector<Edge *> viewEdge;
 
-
+    MC_ReadDB db;
 
 };
 

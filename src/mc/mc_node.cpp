@@ -21,7 +21,9 @@ void MC_node::markNode()
 void MC_node::unmarkNode()
 {
     this->b_mark=false;
+    this->weight=INT_MAX;
     this->predecessor=NULL;
+    this->fixed=false;
 }
 void MC_node::addNeighbor(MC_edge * edge)
 {

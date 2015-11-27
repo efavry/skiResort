@@ -16,9 +16,14 @@ private:
     int altitude;
     bool b_mark;
     list<MC_edge*> l_successors;
-    MC_node* predecessor;
     MC_node (const MC_node&); //copy constructor
     void addNeighbor(MC_edge * edge);
+
+    //for djikstra :
+    int weight=INT_MAX;
+    MC_node* predecessor=NULL;
+    bool fixed=false;
+
 public:
     MC_node(int,string,int);
 

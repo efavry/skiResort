@@ -23,9 +23,9 @@ int main(int argc, char **argv)
 
     layout->addWidget(widget,1,1,20,20);
 
-    GraphPathWidget *pathWidget = new GraphPathWidget();
+    //GraphPathWidget *pathWidget = new GraphPathWidget();
     //pathWidget->populate();
-    layout->addWidget(pathWidget,21,1,1,20);
+    //layout->addWidget(pathWidget,21,1,1,20);
 
     RightWidget *rwidget = new RightWidget(mc);
     layout->addWidget(rwidget,1,21,1,1);

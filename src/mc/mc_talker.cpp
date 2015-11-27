@@ -2,42 +2,60 @@
 #include "mc_talker.h"
 #include "../view/node.h"
 #include <iostream>
+#include <list>
 #include <QObject>
 #include <QString>
 #include <QList>
 using namespace std;
 MC_talker::MC_talker()
+    :db("dataski.txt")
 {
     graph = new MC_graph();
 }
 
 void MC_talker::populate()
 {
-    MC_node *node1=new MC_node(0,QString("ipsum node").toStdString(),10000);
-    MC_node *node2=new MC_node(1,QString("quia node").toStdString(),500);
-    MC_node *node3=new MC_node(2,QString("dolor node").toStdString(),1000);
-    MC_node *node4=new MC_node(3,QString("sit node").toStdString(),400);
-    MC_node *node5=new MC_node(4,QString("amet node").toStdString(),1050);
-    MC_node *node6=new MC_node(5,QString("gauss node").toStdString(),2300);
+    MC_node *node;
+    list<db_node> dbNodes = db.getDbNodes();
+    for(db_node dbn:dbNodes)
+    {
+        node=new MC_node(dbn.id,dbn.name,dbn.altitude);
+        graph->addNode(node);
+        QObject::connect(node,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
+    }
+
+    MC_edge *edge;
+    list<db_edge> dbEdges = db.getDbEdges();
+    //ugly nested for ahead
+    MC_node* mcnode_source=NULL;
+    MC_node* mcnode_dest=NULL;
+    for(db_edge dbe:dbEdges)
+    {
+        for(MC_node* mcnode:graph->listOfNodes)
+            if(mcnode->id == dbe.idSourcePoint)
+            {
+                mcnode_source=mcnode;
+                break;
+            }
+        for(MC_node* mcnode:graph->listOfNodes)
+            if(mcnode->id == dbe.idDestPoint)
+            {
+                mcnode_dest=mcnode;
+                break;
+            }
+        graph->connectNode(mcnode_source,mcnode_dest,dbe.id,dbe.name,dbe.tr);
+        mcnode_source=NULL;
+        mcnode_dest=NULL;
+    }
+    /*
+    MC_node *node1=new MC_node(0,QString("ipsum").toStdString(),10000);
 
     graph->addNode(node1);
-    graph->addNode(node2);
-    graph->addNode(node3);
-    graph->addNode(node4);
-    graph->addNode(node5);
-    graph->addNode(node6);
 
     QObject::connect(node1,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
-    QObject::connect(node2,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
-    QObject::connect(node3,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
-    QObject::connect(node4,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
-    QObject::connect(node5,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
-    QObject::connect(node6,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
 
     graph->connectNode(node1,node2,1,"premier e",TypeRoute::V);
-    graph->connectNode(node2,node3,2,"second e",TypeRoute::B);
-    graph->connectNode(node3,node4,3,"troisieme e",TypeRoute::TC);
-    graph->connectNode(node4,node5,4,"quatrieme e",TypeRoute::N);
+    */
 }
 
 

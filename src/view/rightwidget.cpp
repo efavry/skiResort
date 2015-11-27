@@ -104,8 +104,14 @@ void RightWidget::constructPathGroup()
     groupBoxLayout->addWidget(new QLabel("End point :"),2,1,1,1);
     groupBoxLayout->addWidget(destComboBox,2,2,1,2);
 
-    QPushButton *computeButton=new QPushButton("Compute !");
+    computeButton=new QPushButton("Compute !\n(will do something only on reachable place)");
+    computeButton->setEnabled(false);
+    connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(deactivatePathButton()));
+    connect(destComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(activatePathButton()));
     connect(computeButton,SIGNAL(clicked()),this,SLOT(startShortestPath()));
+    connect(computeButton,SIGNAL(clicked()),this,SLOT(deactivatePathButton()));
     groupBoxLayout->addWidget(computeButton,3,1,1,3);
 
     pathGroupBox->setLayout(groupBoxLayout);
@@ -171,13 +177,39 @@ void RightWidget::assignReachableNode(int i)
 {
     destComboBox->clear();
     list<int> listOfReachedNode = mcTalker->getReachableNode(i);
+    int j=0;
+    QString text;
+    for(int id:mcTalker->getNodeIDList())
+    {
+
+        text.append(QString::number(id));
+        text.append(" | ");
+        text.append(QString::fromStdString(mcTalker->getNodeNameFromId(id)));
+        for(int comparator:listOfReachedNode)
+        {
+            if(comparator == j)
+            {
+                text.append(" Reachable");
+            }
+        }
+        destComboBox->addItem(QString(text));
+        text.clear();
+        ++j;
+    }
+
+
+
+/*
     for(int id:listOfReachedNode)
+        destComboBox->itemData()
+
+
         destComboBox->addItem(
                     QString::number(id).append(" | ").append(
                     QString::fromStdString(
                     mcTalker->getNodeNameFromId(
                     id
-                    ))));
+                    ))));*/
 }
 
 void RightWidget::assignReachableNodeWithCondition(int i/*,TypeRoute type*/)

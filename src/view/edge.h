@@ -35,6 +35,7 @@ private:
     int distance;
     int temps;
     TypeRoute typeRoute;
+    int offset;
 
 
 };
