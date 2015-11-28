@@ -74,10 +74,10 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (!source || !dest)
         return;
 
-    QLineF line((sourcePoint.x())+this->offset,
+    QLineF line((sourcePoint.x())/*+this->offset*/,
                 (sourcePoint.y())+this->offset,
                 (destPoint.x())+this->offset,
-                (destPoint.y())+this->offset);
+                (destPoint.y())/*+this->offset*/);
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
@@ -98,9 +98,9 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (line.dy() >= 0)
         angle = TwoPi - angle;
 
-    QPointF destArrowP1 = destPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
+    QPointF destArrowP1 = destPoint +QPointF(offset,0) + QPointF(sin(angle - Pi / 3) * arrowSize,
                                               cos(angle - Pi / 3) * arrowSize);
-    QPointF destArrowP2 = destPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
+    QPointF destArrowP2 = destPoint +QPointF(offset,0) + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
                                               cos(angle - Pi + Pi / 3) * arrowSize);
     painter->setBrush(Qt::darkBlue);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
@@ -109,7 +109,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->setPen(QPen(Qt::black, 0));
     //std::cout << this->info.size() << std::endl;
     QString info(name);
-    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)/*,Qt::AlignHCenter,*/,info);
+    painter->drawText(sourcePoint.x() + line.dx()/2 + offset,sourcePoint.y()+(line.dy()/2) +offset /*,Qt::AlignHCenter,*/,info);
     info.clear();
     info.append("Distance : ");
     info.append(QString::number(distance));

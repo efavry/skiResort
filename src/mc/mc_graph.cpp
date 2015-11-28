@@ -36,7 +36,7 @@ void MC_graph::connectNode(MC_node *from,MC_node *to,int id,string name,TypeRout
             temps=2*distanceCalc;
             break;
         case TypeRoute::KL:
-            temps=0.166*distanceCalc; //(10 sec ie 1/6 minutes for 100m)
+            temps=(int)(10/60*((float)distanceCalc)); //(10 sec ie 1/6 minutes for 100m)
             break;
         case TypeRoute::SURF:
             temps=10*distanceCalc;
@@ -58,7 +58,12 @@ void MC_graph::connectNode(MC_node *from,MC_node *to,int id,string name,TypeRout
             break;
         case TypeRoute::BUS: //assuming we know a lot
             //TODO : TEMPS BUS
-            temps=35;
+            if(id == 57 || id == 58)
+                temps=30;
+            else if (id==59 || id ==60)
+                temps=40;
+            //else
+                //temps=35;
             break;
         default:
             temps=distanceCalc;
@@ -120,12 +125,13 @@ void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
         {
             if(edge->dest->fixed==false)
             {
-                l_opened.push_back(edge->dest);
+                if(edge->dest->b_mark == false)
+                    l_opened.push_back(edge->dest);
                 edge->dest->predecessor=electedNode; //we temporary mark them with the previous weight + the edge weight
-                edge->dest->weight=electedNode->weight + edge->distance;
+                edge->dest->weight=electedNode->weight + edge->temps;
             }
-            std::cout << "First for\n";
         }
+        std::cout << "Mid dijk\n";
         //now in the non definitly fixed node that we visited we find the minimal weight
         //we fix the node that have this minimal weight
         //we elect it
@@ -134,13 +140,13 @@ void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
         list<MC_node*>::iterator minimalWeightNode = std::begin(l_opened);
         while (minimalWeightNode != std::end(l_opened))
         {
-            if ((*minimalWeightNode)->weight<mini)
+            if ((*minimalWeightNode)->weight<=mini)
             {
                 electedNode = *minimalWeightNode; //an iterator "feel like a pointer"
                 electedNode->fixed=true;
-                //l_opened.remove(electedNode); //will call the destructor of the pointer but not of the actual object because we use ptr
+                mini=electedNode->weight;
                 minimalWeightNode = l_opened.erase(minimalWeightNode);
-                mini=(*minimalWeightNode)->weight;
+                //l_opened.remove(electedNode); //will call the destructor of the pointer but not of the actual object because we use ptr
             }
             else
                 ++minimalWeightNode;
@@ -149,10 +155,16 @@ void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
     }
     //reconstruct the path
     MC_node* iter=endPoint; //our "iterator"
+    if(iter->weight >0)
+        iter->weight+=10;
+    std::cout << "time" << iter->weight << std::endl;
     while(iter!=NULL)
     {
         iter->selectNode(); //signal that he is part of the path
+        std::cout << iter->name << std::endl;
+
         iter=iter->predecessor;
+
     }
     //cleanup the mess
     unmarkAll();
