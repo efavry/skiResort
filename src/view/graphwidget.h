@@ -1,6 +1,7 @@
 #ifndef GRAPH_GRAPHWIDGET_H
 #define GRAPH_GRAPHWIDGET_H
 #include "mc_type.h"
+#include "edge.h"
 #include <QtGui/QGraphicsView>
 #include <string>
 using namespace std;
@@ -14,7 +15,7 @@ class GraphWidget : public QGraphicsView
 friend MC_talker;
 public:
     //GraphWidget(QWidget *parent = 0);
-    GraphWidget(QWidget *parent=0,int sceneBoundX = 1900,int sceneBoundY = 1000,qreal scaleFactorX= 0.6,qreal scaleFactorY= 0.6);
+    GraphWidget(QWidget *parent=0,int sceneBoundX = 1200,int sceneBoundY = 1000,qreal scaleFactorX= 0.6,qreal scaleFactorY= 0.6);
     void itemMoved();
     //virtual void populate();
     QList<V_Node *>& getListOfNode(){return listOfNode;} //attention a pas faire l'idiot avec ça
@@ -31,6 +32,39 @@ public slots:
     void electSignal(int);
     void createNode(int id,string name,int altitude);
     void createEdge(int fromId,int destId,int id,string name,int distance,int temps,TypeRoute typeRoute);
+    void setStateOfShowableNameForEdges(int i)
+    {
+        bool statusToAssign =false;
+        if(i==Qt::Checked)
+            statusToAssign = true;
+        foreach (Edge* edge, this->listOfEdge)
+        {
+            edge->showName = statusToAssign;
+            edge->update();
+        }
+    }
+    void setStateOfShowableTimeForEdges(int i)
+    {
+        bool statusToAssign =false;
+        if(i==Qt::Checked)
+            statusToAssign = true;
+        foreach (Edge* edge, this->listOfEdge)
+        {
+            edge->showTime = statusToAssign;
+            edge->update();
+        }
+    }
+    void setStateOfShowableDistanceForEdges(int i)
+    {
+        bool statusToAssign =false;
+        if(i==Qt::Checked)
+            statusToAssign = true;
+        foreach (Edge* edge, this->listOfEdge)
+        {
+            edge->showDistance = statusToAssign;
+            edge->update();
+        }
+    }
 
 protected:
     void keyPressEvent(QKeyEvent *event);

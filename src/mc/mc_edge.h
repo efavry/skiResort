@@ -19,8 +19,8 @@ private :
     MC_node* dest;
     int idRoute;
     //string routeName;
-    int distance;
-    int temps;
+    int distance=0;
+    int temps=0;
     TypeRoute typeRoute;
 
 

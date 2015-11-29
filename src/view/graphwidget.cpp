@@ -239,10 +239,10 @@ void GraphWidget::createNode(int id,string name,int altitude)
     int sceneBoundY=this->scene()->height();
     V_Node* vn;
     if(centerNode!=NULL)
-        vn= new V_Node(this,id,QString::fromStdString(name));
+        vn= new V_Node(this,id,QString::fromStdString(name),altitude);
     else
     {
-        vn = new V_Node(this,id,QString::fromStdString(name),true,true);
+        vn = new V_Node(this,id,QString::fromStdString(name),altitude,true,true);
         centerNode =vn;
     }
     listOfNode.append(vn);

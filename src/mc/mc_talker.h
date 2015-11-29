@@ -7,8 +7,10 @@
 #include <list>
 #include <vector>
 using namespace std;
+class RightWidget;
 class MC_talker
 {
+friend RightWidget;
 public:
     MC_talker();
     void populate();

@@ -14,11 +14,12 @@ private :
     void constructLevelGroup();
     void constructPathGroup();
     void constructInfoGroup();
+    void constructOptionGroup();
     MC_talker *mcTalker;
 
     //for changing dinamicallhy the info :
     QComboBox *destComboBox;
-    QComboBox *reachableLevelComboBox;
+    QListWidget *reachableLevelList;
     QLabel *labelName;
     QLabel *labelAltitude;
 
@@ -52,6 +53,7 @@ public slots:
     }
     void deactivatePathButton(){computeButton->setEnabled(false);}
     void activatePathButton(){computeButton->setEnabled(true);}
+
 };
 
 #endif // RIGHTWIDGET_H

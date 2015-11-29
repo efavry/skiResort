@@ -12,6 +12,7 @@ RightWidget::RightWidget(MC_talker *mc,QWidget *parent) :
     constructLevelGroup();
     constructPathGroup();
     constructInfoGroup();
+    constructOptionGroup();
 
     //layout->addWidget(new QLabel("Starting Node :"),3,1,1,1);
     //layout->addWidget(new QPushButton("test"));
@@ -49,7 +50,7 @@ void RightWidget::constructLevelGroup()
     sourceComboBox->setCurrentIndex(-1);
 
 
-    reachableLevelComboBox = new QComboBox();
+    reachableLevelList = new QListWidget();
     connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(sendAResetElectionSig()));
     connect(sourceComboBox,SIGNAL(currentIndexChanged(int)),
@@ -61,9 +62,7 @@ void RightWidget::constructLevelGroup()
     groupBoxLayout->addWidget(new QLabel("Start point :"),1,1,1,1);
     groupBoxLayout->addWidget(sourceComboBox,1,2,1,2);
     groupBoxLayout->addWidget(new QLabel("Reachable point :"),2,1,1,1);
-    groupBoxLayout->addWidget(reachableLevelComboBox,2,2,1,2);
-
-
+    groupBoxLayout->addWidget(reachableLevelList,2,2,1,2);
 
     levelGroupBox->setLayout(groupBoxLayout);
 
@@ -148,6 +147,22 @@ void RightWidget::constructInfoGroup()
     layout->addWidget(infoGroupBox);
 }
 
+void RightWidget::constructOptionGroup()
+{
+    QGroupBox *optionGroupBox = new QGroupBox("Graph Visualiser Option :");
+    optionGroupBox->setLayout(new QVBoxLayout());
+    QCheckBox *checkShowName = new QCheckBox("Show the name of the path");
+    connect(checkShowName,SIGNAL(stateChanged(int)),mcTalker->graphWidget,SLOT(setStateOfShowableNameForEdges(int)));
+    optionGroupBox->layout()->addWidget(checkShowName);
+    QCheckBox *checkShowDist =new QCheckBox("Show the distance of the path");
+    connect(checkShowDist,SIGNAL(stateChanged(int)),mcTalker->graphWidget,SLOT(setStateOfShowableDistanceForEdges(int)));
+    optionGroupBox->layout()->addWidget(checkShowDist);
+    QCheckBox *checkShowTime =new QCheckBox("Show the time of the path");
+    connect(checkShowTime,SIGNAL(stateChanged(int)),mcTalker->graphWidget,SLOT(setStateOfShowableTimeForEdges(int)));
+    optionGroupBox->layout()->addWidget(checkShowTime);
+
+    layout->addWidget(optionGroupBox);
+}
 
 //slots
 void RightWidget::assignRouteCondition(int i)
@@ -216,10 +231,10 @@ void RightWidget::assignReachableNodeWithCondition(int i/*,TypeRoute type*/)
 {
 
     std::cout<<"View : Level DFS : Places selected " << i << " tr : " << trCondition << std::endl;
-    reachableLevelComboBox->clear();
+    reachableLevelList->clear();
     list<int> listOfReachedNode = mcTalker->getReachableNodeWithCondition(i,trCondition);
     for(int id:listOfReachedNode)
-        reachableLevelComboBox->addItem(
+        reachableLevelList->addItem(
                             QString::number(id).append(" | ").append(
                             QString::fromStdString(
                             mcTalker->getNodeNameFromId(

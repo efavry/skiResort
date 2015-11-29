@@ -132,12 +132,11 @@ void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
             }
         }
         std::cout << "Mid dijk\n";
-        //now in the non definitly fixed node that we visited we find the minimal weight
-        //we fix the node that have this minimal weight
-        //we elect it
-        //we remove it from opened
+
+
+
         //welcome toC++ ! when removing  with a foreach logically make a segfault but  you must iterate anyway so you use this :
-        list<MC_node*>::iterator minimalWeightNode = std::begin(l_opened);
+        /*list<MC_node*>::iterator minimalWeightNode = std::begin(l_opened);
         while (minimalWeightNode != std::end(l_opened))
         {
             if ((*minimalWeightNode)->weight<=mini)
@@ -150,7 +149,18 @@ void MC_graph::dijkstra(MC_node *startPoint, MC_node *endPoint)
             }
             else
                 ++minimalWeightNode;
-        }
+        }*/
+        //now in the non definitly fixed node that we visited we find the minimal weight and we elc this node
+        for(MC_node * minimalWeightNodeIter : l_opened)
+            if(minimalWeightNodeIter->weight<=mini)
+            {
+                electedNode = minimalWeightNodeIter;
+                mini=electedNode->weight;
+            }
+        //we fix the node that have this minimal weight
+        electedNode->fixed=true;
+        //we remove it from opened
+        l_opened.remove(electedNode);
         mini=INT_MAX;
     }
     //reconstruct the path

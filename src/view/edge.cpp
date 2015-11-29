@@ -83,16 +83,16 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
     // Draw the line itself
     painter->setPen(QPen(this->edgeColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+//    painter->drawLine(line);
 
-/*    QPainterPath path;
+    QPainterPath path;
     path.moveTo(sourcePoint);//c0
     //c1 puis c2 puis c3
     path.cubicTo(sourcePoint.x()+ line.dx()/3,sourcePoint.y(), //c1
                  destPoint.x()- line.dx()/3,destPoint.y(), //c2
                  destPoint.x(),destPoint.y()); //endpoint
     painter->drawPath(path);
-*/
+
     // Draw the arrows
     double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
@@ -108,16 +108,27 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     //draw info text
     painter->setPen(QPen(Qt::black, 0));
     //std::cout << this->info.size() << std::endl;
-    QString info(name);
-    painter->drawText(sourcePoint.x() + line.dx()/2 + offset,sourcePoint.y()+(line.dy()/2) +offset /*,Qt::AlignHCenter,*/,info);
-    info.clear();
-    info.append("Distance : ");
-    info.append(QString::number(distance));
-    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+10/*,Qt::AlignHCenter,*/,info);
-    info.clear();
-    info.append("Temps : ");
-    info.append(QString::number(temps));
-    painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+20/*,Qt::AlignHCenter,*/,info);
+    QString info;
+    if(showName ==  true)
+    {
+        info.clear();
+        info = name;
+        painter->drawText(sourcePoint.x() + line.dx()/2 + offset,sourcePoint.y()+(line.dy()/2) +offset /*,Qt::AlignHCenter,*/,info);
+    }
+    if(showDistance == true)
+    {
+        info.clear();
+        info.append("Distance : ");
+        info.append(QString::number(distance));
+        painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+10/*,Qt::AlignHCenter,*/,info);
+    }
+    if(showTime == true)
+    {
+        info.clear();
+        info.append("Temps : ");
+        info.append(QString::number(temps));
+        painter->drawText(sourcePoint.x() + line.dx()/2,sourcePoint.y()+(line.dy()/2)+20/*,Qt::AlignHCenter,*/,info);
+    }
 }
 
 QColor Edge::findEdgeColor(TypeRoute typeR)

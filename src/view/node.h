@@ -13,7 +13,7 @@ class V_Node : public QGraphicsItem
 friend GraphWidget;
 friend MC_talker;
 public:
-    V_Node(GraphWidget *graphWidget,int i=-1,QString _text=QString(), bool isActive = true, bool isCenterNode = false);
+    V_Node(GraphWidget *graphWidget,int i=-1,QString _text=QString(),int _altitude=0, bool isActive = true, bool isCenterNode = false);
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
@@ -42,7 +42,8 @@ private:
     QPointF newPos;
     GraphWidget *graph;
     int id;
-    QString text;
+    QString text="";
+    int altitude;
     bool elected=false;
     bool activated;
     bool centerNode;

@@ -3,9 +3,11 @@
 #include "mc_type.h"
 #include <iostream>
 #include <QGraphicsItem>
+class GraphWidget;
 class V_Node;
 class Edge : public QGraphicsItem
 {
+friend GraphWidget;
 public:
     Edge(V_Node *sourceNode, V_Node *destNode,int id,QString _name=QString(),int distance=0,int temps=0,TypeRoute typeRoute = TypeRoute::NONE);
     V_Node *sourceNode() const;
@@ -37,7 +39,9 @@ private:
     TypeRoute typeRoute;
     int offset;
 
-
+    bool showName=false;
+    bool showTime=false;
+    bool showDistance=false;
 };
 
 #endif //GRAPH_EDGE_H

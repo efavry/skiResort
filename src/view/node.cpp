@@ -8,8 +8,8 @@
 #include "node.h"
 #include "graphwidget.h"
 
-V_Node::V_Node(GraphWidget *graphWidget,int i,QString _text,bool isActive, bool isCenterNode)
-    : graph(graphWidget),text(_text),id(i)
+V_Node::V_Node(GraphWidget *graphWidget,int i,QString _text,int _altitude,bool isActive, bool isCenterNode)
+    : graph(graphWidget),text(_text),id(i),altitude(_altitude)
 {
     if(isActive)
         setFlag(ItemIsMovable);

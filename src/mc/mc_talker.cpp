@@ -24,7 +24,7 @@ void MC_talker::populate()
         QObject::connect(node,SIGNAL(selectedSignal(int)),graphWidget,SLOT(electSignal(int)));
     }
 
-    MC_edge *edge;
+    //MC_edge *edge;
     list<db_edge> dbEdges = db.getDbEdges();
     //ugly nested for ahead
     MC_node* mcnode_source=NULL;
